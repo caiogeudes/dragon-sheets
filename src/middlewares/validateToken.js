@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const knex = require('../database');
 
 const validateToken = async (req, res, next) => {
-    const { authorization } = req.headers;
+    const token = localStorage.getItem('token');
     try {
-        const verifiedToken = jwt.verify(authorization, process.env.JWT_PASS);
+        const verifiedToken = jwt.verify(token, process.env.JWT_PASS);
         const id = verifiedToken.id
         const userFound = await knex('users').where('id', id);
         if (userFound.length < 1) {

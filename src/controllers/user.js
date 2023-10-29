@@ -16,6 +16,7 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     const user = req.user
+    console.log(req);
     return res.status(200).json({
         user
     })
