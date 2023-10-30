@@ -1,5 +1,48 @@
 const knex = require('../database');
 const bcrypt = require('bcrypt');
+const { parse } = require('node-html-parser');
+const fs = require('fs').promises;
+
+const getSignUpPage = async (req, res) => {
+    try {
+        const htmlFile = await fs.readFile('./src/public/sign-up.html', 'utf-8', (err, data) => {
+            if (err) {
+                return console.log(err.message);
+            } else {
+                return data
+            }
+        });
+        const root = parse(htmlFile);
+        const rootString = root.toString();
+        return res.status(201).send(rootString);
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+};
+
+const getUserPage = async (req, res) => {
+    const user = req.user
+    try {
+        const htmlFile = await fs.readFile('./src/public/user.html', 'utf-8', (err, data) => {
+            if (err) {
+                return console.log(err.message);
+            } else {
+                return data
+            }
+        });
+        const root = parse(htmlFile);
+        const userID = root.querySelector('#userID');
+        userID.set_content(`${user.id}`)
+        const userName = root.querySelector('#userName');
+        userName.set_content(`${user.name}`)
+        const userEmail = root.querySelector('#userEmail');
+        userEmail.set_content(`${user.email}`)
+        const modifiedHTML = root.toString();
+        return res.send(modifiedHTML);
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+}
 
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -14,12 +57,10 @@ const createUser = async (req, res) => {
     }
 }
 
-const getUser = (req, res) => {
-    const user = req.user
-    return res.status(200).json({ user })
-}
+
 
 module.exports = {
     createUser,
-    getUser
+    getSignUpPage,
+    getUserPage
 }

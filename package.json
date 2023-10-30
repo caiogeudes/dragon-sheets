@@ -1,7 +1,7 @@
 {
   "name": "dragon-sheets",
   "version": "1.0.0",
-  "description": "",
+  "description": "```\r     npm i\r ```\r ### Em seguida, devemos inicializar o nosso servidor:\r ```\r     npm run dev\r ```\r ## Endpoints\r ### `POST /sign-up`\r #### Neste endpoint, é possível criar uma conta para acessar as funcionalidades do projeto. Para efetuar o registro, será necessário fornecer:\r * Nome\r * Email\r * Senha\r ### `POST /login`\r #### É necessário efetuar o login com: \r * Email\r * Senha\r ### `GET /user`\r #### Detalha a conta do usuário logado.",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js"
@@ -19,10 +19,12 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.0.1",
+    "node-html-parser": "^6.1.11",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.11.3",
+    "pug": "^3.0.2",
     "sessionstorage": "^0.1.0"
   },
   "devDependencies": {
