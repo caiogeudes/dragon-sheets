@@ -12,18 +12,18 @@
 ```
     npm run dev
 ```
-## Endpoints
-### `POST /sign-up`
+## Funcionalidades
+### Cadastrar novo usuário - `POST /sign-up`
 #### Neste endpoint, é possível criar uma conta para acessar as funcionalidades do projeto. Para efetuar o registro, será necessário fornecer:
 * Nome
 * Email
 * Senha
-### `POST /login`
-#### É necessário efetuar o login com: 
+### Fazer login - `POST /login`
+#### Podemos fazer login com: 
 * Email
 * Senha
-### `GET /user`
-#### Detalha a conta do usuário logado.
+
+### Exibir perfil do usuário logado - `GET /user`
 
 ## (Projeto ainda em desenvolvimento...)
 
