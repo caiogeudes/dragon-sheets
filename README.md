@@ -2,10 +2,12 @@
 ## O que é?
 ### Dragon Sheets é um projeto que você pode criar fichas de RPG online e armazená-las em um banco de dados.
 ## Instalação
-### Após fazer o fork e clone do projeto, devemos instalar as bibliotecas com o npm:
+### Inicialmente devemos criar nosso banco de dados, e rodar a query do dump para criarmos as tabelas. Este dump está em um arquivo chamado "*dump.sql*" 
+### Com o banco de dados criado, devemos definir as variáveis de ambiente. Para isso, deixei no código um arquivo chamado "*.env.example*", nele, você deve informar os dados da sua aplicação.
+### Após estas etapas, devemos instalar as bibliotecas com o npm:
 ```
     npm i
-```
+``` 
 ### Em seguida, devemos inicializar o nosso servidor:
 ```
     npm run dev
