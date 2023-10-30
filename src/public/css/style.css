@@ -47,6 +47,7 @@
 
 		h2 {
 			font-size: 1.9rem;
+			display: inline;
 		}
 
 		h3 {
@@ -85,4 +86,17 @@
 		a:hover {
 			color: #c31d07;
 
+		}
+
+		#tableUser {
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+			border-spacing: 1.5rem;
+
+		}
+
+		.userInfo {
+			color: gray;
+			text-align: left;
 		}
