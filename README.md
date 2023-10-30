@@ -2,6 +2,14 @@
 ## O que é?
 ### Dragon Sheets é um projeto que você pode criar fichas de RPG online e armazená-las em um banco de dados.
 ## Instalação
+### Build Docker image
+'''
+docker build -t dragon-sheets:latest .
+'''
+### Run Docker container
+'''
+docker run -d -p8080:8080 --name dragon-sheets dragon-sheets:latest
+'''
 ### Após fazer o fork e clone do projeto, devemos instalar as bibliotecas com o npm:
 ```
     npm i
