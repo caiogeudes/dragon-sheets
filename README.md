@@ -25,5 +25,9 @@
 
 ### Exibir perfil do usuário logado - `GET /user`
 
+### Criar uma ficha - `GET /new-sheet`
+
+### Exibir suas fichas - `GET /main`
+
 ## (Projeto ainda em desenvolvimento...)
 
