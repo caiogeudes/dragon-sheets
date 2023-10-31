@@ -14,7 +14,7 @@ const getSignUpPage = async (req, res) => {
         });
         const root = parse(htmlFile);
         const rootString = root.toString();
-        return res.status(201).send(rootString);
+        return res.status(200).send(rootString);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
     }
@@ -38,7 +38,7 @@ const getUserPage = async (req, res) => {
         const userEmail = root.querySelector('#userEmail');
         userEmail.set_content(`${user.email}`)
         const modifiedHTML = root.toString();
-        return res.send(modifiedHTML);
+        return res.status(200).send(modifiedHTML);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
     }
@@ -46,18 +46,24 @@ const getUserPage = async (req, res) => {
 
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;
+    const htmlFile = await fs.readFile('./src/public/sign-up-success.html', 'utf-8', (err, data) => {
+        if (err) {
+            return console.log(err.message);
+        } else {
+            return data
+        }
+    });
+    const root = parse(htmlFile);
     try {
         const encryptedPass = await bcrypt.hash(password, 10);
-        const newUser = await knex('users').insert({ name, email, password: encryptedPass }).returning('*');
-        const { password: _, ...user } = newUser[0];
-        return res.status(201).json(user);
+        await knex('users').insert({ name, email, password: encryptedPass }).returning('*');
+        const rootString = root.toString();
+        return res.status(201).send(rootString);
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
     }
 }
-
-
 
 module.exports = {
     createUser,
