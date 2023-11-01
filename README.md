@@ -26,6 +26,10 @@
 ### Exibir perfil do usuário logado - `GET /user`
 
 ### Criar uma ficha do sistema 3D&T - `POST /new-sheet-3det`
+#### Podemos criar uma ficha com base no sistema 3D&T, que segue possui os seguintes campos:
+* Nome do personagem, Pontos, Classe, Raça, Pontos de Força, Pontos de Habilidade, Pontos de Resistência
+Pontos de Armadura, Pontos de Poder de Fogo, Vantagens, Desvantagens, HP, MP , Pontos de Experiência
+Tipos de Dano, Magias Conhecidas, Inventário , História
 
 ### Exibir suas fichas - `GET /main`
 
