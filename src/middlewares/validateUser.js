@@ -15,7 +15,7 @@ const validateNewUser = async (req, res, next) => {
     const root = parse(htmlFile);
     const errorMessage = root.querySelector('#errorMessage');
     try {
-        const validatedSchema = await schema.validateAsync({ name, email, password });
+        await schema.validateAsync({ name, email, password });
         const emailVerify = await knex('users').select('*').where('email', email);
         if (emailVerify.length > 0) {
             errorMessage.set_content("E-mail informado já cadastrado.")
