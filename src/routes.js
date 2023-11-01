@@ -20,6 +20,6 @@ rota.get('/user', getUserPage);
 rota.get('/main', getMainPage);
 rota.get('/new-sheet', getNewSheetPage);
 rota.get('/new-sheet-3det', get3detPage);
-rota.post('/new-sheet', validateNewSheet, createNewSheet3DET);
+rota.post('/new-sheet-3det', validateNewSheet, createNewSheet3DET);
 
 module.exports = rota
