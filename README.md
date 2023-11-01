@@ -25,7 +25,7 @@
 
 ### Exibir perfil do usuário logado - `GET /user`
 
-### Criar uma ficha - `GET /new-sheet`
+### Criar uma ficha do sistema 3D&T - `POST /new-sheet-3det`
 
 ### Exibir suas fichas - `GET /main`
 
