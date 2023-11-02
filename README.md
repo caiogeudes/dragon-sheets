@@ -29,7 +29,7 @@
 #### Podemos criar uma ficha com base no sistema 3D&T, que segue possui os seguintes campos:
 * Nome do personagem, Pontos, Classe, Raça, Pontos de Força, Pontos de Habilidade, Pontos de Resistência
 Pontos de Armadura, Pontos de Poder de Fogo, Vantagens, Desvantagens, HP, MP , Pontos de Experiência
-Tipos de Dano, Magias Conhecidas, Inventário , História
+Tipos de Dano, Magias Conhecidas, Inventário e História.
 
 ### Exibir suas fichas - `GET /main`
 
