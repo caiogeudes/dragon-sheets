@@ -112,8 +112,23 @@ const createNewSheet3DET = async (req, res) => {
     }
 }
 
+const getMySheet = async (req, res) => {
+    let { sheetNumber } = req.params;
+    const { id } = req.user;
+    try {
+        const sheetsFound = await knex('user_sheets').where('user_id', id);
+        if (sheetsFound[sheetNumber - 1].system === '3D&T') {
+            const sheet3det = await knex('threedetsheets').where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            return res.status(200).json({ sheet3det });
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+}
 module.exports = {
     getNewSheetPage,
     get3detPage,
-    createNewSheet3DET
+    createNewSheet3DET,
+    getMySheet
 }

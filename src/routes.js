@@ -6,7 +6,7 @@ const validateNewSheet = require('./middlewares/validateNewSheet');
 const { getSignUpPage, getUserPage, createUser } = require('./controllers/user');
 const { getLoginPage, login } = require('./controllers/login');
 const { getMainPage } = require('./controllers/main');
-const { getNewSheetPage, createNewSheet3DET, get3detPage } = require('./controllers/sheet');
+const { getNewSheetPage, createNewSheet3DET, get3detPage, getMySheet } = require('./controllers/sheet');
 const rota = express();
 
 rota.get('/sign-up', getSignUpPage)
@@ -21,5 +21,6 @@ rota.get('/main', getMainPage);
 rota.get('/new-sheet', getNewSheetPage);
 rota.get('/new-sheet-3det', get3detPage);
 rota.post('/new-sheet-3det', validateNewSheet, createNewSheet3DET);
+rota.get('/my-sheet/:sheetNumber', getMySheet);
 
 module.exports = rota
