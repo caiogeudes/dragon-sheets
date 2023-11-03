@@ -58,6 +58,10 @@
 			font-size: 1.6rem;
 		}
 
+		.characterInfo {
+			color: grey;
+		}
+
 		input {
 			border: solid;
 			padding: 5px;

@@ -119,7 +119,69 @@ const getMySheet = async (req, res) => {
         const sheetsFound = await knex('user_sheets').where('user_id', id);
         if (sheetsFound[sheetNumber - 1].system === '3D&T') {
             const sheet3det = await knex('threedetsheets').where('id', sheetsFound[sheetNumber - 1].sheet_id);
-            return res.status(200).json({ sheet3det });
+
+            const htmlFile = await fs.readFile('./src/public/my-sheet-3det.html', 'utf-8', (err, data) => {
+                if (err) {
+                    return console.log(err.message);
+                } else {
+                    return data
+                }
+            });
+
+            function substituirValoresNulos(objeto, valorSubstituto) {
+                for (let propriedade in objeto) {
+                    if (objeto.hasOwnProperty(propriedade)) {
+                        if (objeto[propriedade] === undefined) {
+                            objeto[propriedade] = valorSubstituto;
+                        } else if (objeto[propriedade] === null) {
+                            objeto[propriedade] = valorSubstituto;
+                        }
+                    }
+                    return objeto;
+                }
+            };
+            substituirValoresNulos(sheet3det[0], " ");
+
+            const root = parse(htmlFile);
+            const characterName = root.querySelector('#characterName');
+            characterName.set_content(`${sheet3det[0].charactername}`);
+            const points = root.querySelector('#points');
+            points.set_content(`${sheet3det[0].points}`);
+            const characterClass = root.querySelector('#characterClass');
+            characterClass.set_content(`${sheet3det[0].characterclass}`);
+            const characterRace = root.querySelector('#characterRace');
+            characterRace.set_content(`${sheet3det[0].characterrace}`);
+            const strenghPoints = root.querySelector('#strenghPoints');
+            strenghPoints.set_content(`${sheet3det[0].strenghpoints}`);
+            const habilityPoints = root.querySelector('#habilityPoints');
+            habilityPoints.set_content(`${sheet3det[0].habilitypoints}`);
+            const vantages = root.querySelector('#vantages');
+            vantages.set_content(`${sheet3det[0].vantages}`);
+            const resistancePoints = root.querySelector('#resistancePoints');
+            resistancePoints.set_content(`${sheet3det[0].resistancepoints}`);
+            const armorPoints = root.querySelector('#armorPoints');
+            armorPoints.set_content(`${sheet3det[0].armorpoints}`);
+            const disavantages = root.querySelector('#disavantages');
+            disavantages.set_content(`${sheet3det[0].disavantages}`);
+            const firePowerPoints = root.querySelector('#firePowerPoints');
+            firePowerPoints.set_content(`${sheet3det[0].firepowerpoints}`);
+            const healthPoints = root.querySelector('#healthPoints');
+            healthPoints.set_content(`${sheet3det[0].healthpoints}`);
+            const manaPoints = root.querySelector('#manaPoints');
+            manaPoints.set_content(`${sheet3det[0].manapoints}`);
+            const experiencePoints = root.querySelector('#experiencePoints');
+            experiencePoints.set_content(`${sheet3det[0].experiencepoints}`);
+            const damageType = root.querySelector('#damageType');
+            damageType.set_content(`${sheet3det[0].damagetype}`);
+            const spellsKnown = root.querySelector('#spellsKnown');
+            spellsKnown.set_content(`${sheet3det[0].spellsknown}`);
+            const inventory = root.querySelector('#inventory');
+            inventory.set_content(`${sheet3det[0].inventory}`);
+            const history = root.querySelector('#history');
+            history.set_content(`${sheet3det[0].history}`);
+
+            const rootString = root.toString();
+            return res.status(200).send(rootString);
         }
     } catch (error) {
         console.log(error.message);
