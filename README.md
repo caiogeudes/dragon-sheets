@@ -33,5 +33,9 @@ Tipos de Dano, Magias Conhecidas, Inventário e História.
 
 ### Exibir suas fichas - `GET /main`
 
+### Exibir ficha completa - `GET /my-sheet/:sheetNumber`
+
+### Editar ficha - `POST /my-sheet/:sheetNumber/update`
+
 ## (Projeto ainda em desenvolvimento...)
 
