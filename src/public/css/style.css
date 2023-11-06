@@ -101,6 +101,28 @@
 			margin-top: 1%;
 		}
 
+		#btn-editar {
+			background-color: #ff8800;
+			color: #fff;
+			padding: 10px;
+			padding-left: 20px;
+			padding-right: 20px;
+			font-weight: bold;
+			border-radius: 5px;
+			margin-top: 1%;
+		}
+
+		#btn-deletar {
+			background-color: #c31d07;
+			color: #fff;
+			padding: 10px;
+			padding-left: 20px;
+			padding-right: 20px;
+			font-weight: bold;
+			border-radius: 5px;
+			margin-top: 1%;
+		}
+
 		a {
 			text-decoration: none;
 			color: #ff7300;

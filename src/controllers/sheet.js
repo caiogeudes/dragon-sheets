@@ -180,17 +180,139 @@ const getMySheet = async (req, res) => {
             const history = root.querySelector('#history');
             history.set_content(`${sheet3det[0].history}`);
 
+            const url = root.querySelector('a[href="/my-sheet/:sheetNumber/update"]');
+            url.setAttribute('href', `/my-sheet/${sheetNumber}/update`);
             const rootString = root.toString();
             return res.status(200).send(rootString);
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+    }
+}
+
+const getUpdateSheet = async (req, res) => {
+    const { sheetNumber } = req.params;
+    try {
+        const htmlFile = await fs.readFile('./src/public/my-sheet-3det-update.html', 'utf-8', (err, data) => {
+            if (err) {
+                return console.log(err.message);
+            } else {
+                return data
+            }
+        });
+        const root = parse(htmlFile);
+        const url = root.querySelector('form[action="/my-sheet/:sheetNumber/update"]');
+        url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
+        const rootString = root.toString();
+        return res.status(200).send(rootString);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+    }
+}
+const updateSheet = async (req, res) => {
+    const { sheetNumber } = req.params;
+    const { id } = req.user;
+    let {
+        characterName,
+        points,
+        characterClass,
+        characterRace,
+        strenghPoints,
+        habilityPoints,
+        resistancePoints,
+        armorPoints,
+        firePowerPoints,
+        vantages,
+        disavantages,
+        healthPoints,
+        manaPoints,
+        experiencePoints,
+        damageType,
+        spellsKnown,
+        inventory,
+        history
+    } = req.body;
+
+
+    try {
+        const sheetsFound = await knex('user_sheets').where('user_id', id);
+        if (sheetsFound[sheetNumber - 1].system === '3D&T') {
+            const htmlFile = await fs.readFile('./src/public/my-sheet-3det-update.html', 'utf-8', (err, data) => {
+                if (err) {
+                    return console.log(err.message);
+                } else {
+                    return data
+                }
+            });
+            if (characterName) {
+                await knex('threedetsheets').update({ charactername: characterName }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (points) {
+                await knex('threedetsheets').update({ points }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (characterClass) {
+                await knex('threedetsheets').update({ characterclass: characterClass }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (characterRace) {
+                await knex('threedetsheets').update({ characterrace: characterRace }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (strenghPoints) {
+                await knex('threedetsheets').update({ strenghpoints: strenghPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (habilityPoints) {
+                await knex('threedetsheets').update({ habilitypoints: habilityPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (resistancePoints) {
+                await knex('threedetsheets').update({ resistancepoints: resistancePoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (armorPoints) {
+                await knex('threedetsheets').update({ armorpoints: armorPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (firePowerPoints) {
+                await knex('threedetsheets').update({ firepowerpoints: firePowerPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (vantages) {
+                await knex('threedetsheets').update({ vantages }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (disavantages) {
+                await knex('threedetsheets').update({ disavantages }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (healthPoints) {
+                await knex('threedetsheets').update({ healthpoints: healthPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (manaPoints) {
+                await knex('threedetsheets').update({ manapoints: manaPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (experiencePoints) {
+                await knex('threedetsheets').update({ experiencepoints: experiencePoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (damageType) {
+                await knex('threedetsheets').update({ damagetype: damageType }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (spellsKnown) {
+                await knex('threedetsheets').update({ spellsknown: spellsKnown }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (inventory) {
+                await knex('threedetsheets').update({ inventory }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            if (history) {
+                await knex('threedetsheets').update({ history }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
+            }
+            const root = parse(htmlFile);
+            return res.status(200).redirect(`/my-sheet/${sheetNumber}`);
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
 module.exports = {
     getNewSheetPage,
     get3detPage,
     createNewSheet3DET,
-    getMySheet
+    getMySheet,
+    updateSheet,
+    getUpdateSheet
 }
