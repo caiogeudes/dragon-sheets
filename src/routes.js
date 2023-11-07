@@ -24,6 +24,6 @@ rota.post('/new-sheet-3det', validateNewSheet, createNewSheet3DET);
 rota.get('/my-sheet/:sheetNumber', getMySheet);
 rota.get('/my-sheet/:sheetNumber/update', getUpdateSheet);
 rota.post('/my-sheet/:sheetNumber/update', updateSheet);
-rota.get('/my-sheet/:sheetNumber/delete', deleteSheet);
+rota.delete('/my-sheet/:sheetNumber/delete', deleteSheet);
 
 module.exports = rota
