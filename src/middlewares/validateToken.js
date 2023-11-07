@@ -20,8 +20,7 @@ const validateToken = async (req, res, next) => {
         verify = false
         next()
     } catch (error) {
-        console.log(error.message);
-        return res.status(401).json({ mensagem: 'Usuário não autenticado, favor realizar login para acessar este conteúdo.' })
+        return res.status(401).redirect('/')
     }
 
 }

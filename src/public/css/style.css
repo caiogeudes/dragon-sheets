@@ -58,22 +58,68 @@
 			font-size: 1.6rem;
 		}
 
+		.characterInfo {
+			color: grey;
+		}
+
 		input {
 			border: solid;
 			padding: 5px;
-			border-radius: 10px;
+			border-radius: 5px;
 			font-size: 1.6rem;
 			text-align: center;
+			border-width: 2px;
+		}
+
+		.numberInput {
+			border: solid;
+			padding: 5px;
+			border-radius: 5px;
+			font-size: 1.6rem;
+			text-align: center;
+			width: 45%;
+			border-width: 2px;
+		}
+
+		.textAreaInput {
+			border: solid;
+			padding: 5px;
+			border-radius: 5px;
+			font-size: 1.6rem;
+			height: 6rem;
+			border-width: 2px;
 		}
 
 		#btn-enviar {
-			background-color: #008000;
+			background-color: #05ba05;
 			color: #fff;
 			padding: 10px;
 			padding-left: 20px;
 			padding-right: 20px;
 			font-weight: bold;
-			border-radius: 10px;
+			border-radius: 5px;
+			margin-top: 1%;
+		}
+
+		#btn-editar {
+			background-color: #ff8800;
+			color: #fff;
+			padding: 10px;
+			padding-left: 20px;
+			padding-right: 20px;
+			font-weight: bold;
+			border-radius: 5px;
+			margin-top: 1%;
+		}
+
+		#btn-deletar {
+			background-color: #c31d07;
+			color: #fff;
+			padding: 10px;
+			padding-left: 20px;
+			padding-right: 20px;
+			font-weight: bold;
+			border-radius: 5px;
 			margin-top: 1%;
 		}
 
@@ -99,4 +145,40 @@
 		.userInfo {
 			color: gray;
 			text-align: left;
+		}
+
+		.coluna1 {
+			float: left;
+			width: 50%;
+			text-align: initial;
+
+			/* Define a largura da primeira coluna */
+		}
+
+		/* Estilos para a coluna 2 (à direita) */
+		.coluna2 {
+			text-align: end;
+			float: left;
+			width: 50%;
+			/* Define a largura da segunda coluna */
+		}
+
+		/* Limpar flutuações para evitar problemas de layout */
+		.clearfix::after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+
+		.fichas {
+			float: left;
+			width: 50%;
+			text-align: initial;
+		}
+
+		.sheet {
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+			border-spacing: 1.5rem;
 		}
