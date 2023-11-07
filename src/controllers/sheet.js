@@ -105,7 +105,14 @@ const createNewSheet3DET = async (req, res) => {
             sheet_id: newSheet[0].id,
             system: '3D&T'
         });
-        return res.status(201).json({ sheet: newSheet })
+        const sheet = await knex('user_sheets').where('user_id', id);
+        let index = 0;
+        for (let i = 0; i < sheet.length; i++) {
+            if (sheet[i].sheet_id === newSheet[0].id) {
+                index = i + 1;
+            }
+        }
+        return res.status(201).redirect(`/my-sheet/${index}`);
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
@@ -182,6 +189,8 @@ const getMySheet = async (req, res) => {
 
             const url = root.querySelector('a[href="/my-sheet/:sheetNumber/update"]');
             url.setAttribute('href', `/my-sheet/${sheetNumber}/update`);
+            const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber/delete"]');
+            url2.setAttribute('href', `/my-sheet/${sheetNumber}/delete`);
             const rootString = root.toString();
             return res.status(200).send(rootString);
         }
@@ -204,6 +213,8 @@ const getUpdateSheet = async (req, res) => {
         const root = parse(htmlFile);
         const url = root.querySelector('form[action="/my-sheet/:sheetNumber/update"]');
         url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
+        const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber"]');
+        url2.setAttribute('href', `/my-sheet/${sheetNumber}`);
         const rootString = root.toString();
         return res.status(200).send(rootString);
     } catch (error) {
@@ -308,11 +319,29 @@ const updateSheet = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
+
+const deleteSheet = async (req, res) => {
+    const { id } = req.user
+    const { sheetNumber } = req.params;
+    try {
+        const sheetsFound = await knex('user_sheets').where('user_id', id);
+        if (sheetsFound[sheetNumber - 1].system === '3D&T') {
+            await knex('threedetsheets').where('id', sheetsFound[sheetNumber - 1].sheet_id).delete();
+            await knex('user_sheets').where('sheet_id', sheetsFound[sheetNumber - 1].sheet_id).delete();
+        }
+        return res.status(200).redirect('/main')
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+    }
+}
+
 module.exports = {
     getNewSheetPage,
     get3detPage,
     createNewSheet3DET,
     getMySheet,
     updateSheet,
-    getUpdateSheet
+    getUpdateSheet,
+    deleteSheet
 }
