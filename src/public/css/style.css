@@ -58,6 +58,11 @@
 			font-size: 1.6rem;
 		}
 
+		pre {
+			font-size: 1.9rem;
+			display: inline;
+		}
+
 		.characterInfo {
 			color: grey;
 		}

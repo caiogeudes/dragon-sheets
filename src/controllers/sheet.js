@@ -2,6 +2,19 @@ const { parse } = require('node-html-parser');
 const fs = require('fs').promises;
 const knex = require('../database');
 
+function substituirValoresNulos(objeto, valorSubstituto) {
+    for (let propriedade in objeto) {
+        if (objeto.hasOwnProperty(propriedade)) {
+            if (objeto[propriedade] === undefined) {
+                objeto[propriedade] = valorSubstituto;
+            } else if (objeto[propriedade] === null) {
+                objeto[propriedade] = valorSubstituto;
+            }
+        }
+        return objeto;
+    }
+};
+
 const getNewSheetPage = async (req, res) => {
     try {
         const htmlFile = await fs.readFile('./src/public/new-sheet.html', 'utf-8', (err, data) => {
@@ -135,56 +148,46 @@ const getMySheet = async (req, res) => {
                 }
             });
 
-            function substituirValoresNulos(objeto, valorSubstituto) {
-                for (let propriedade in objeto) {
-                    if (objeto.hasOwnProperty(propriedade)) {
-                        if (objeto[propriedade] === undefined) {
-                            objeto[propriedade] = valorSubstituto;
-                        } else if (objeto[propriedade] === null) {
-                            objeto[propriedade] = valorSubstituto;
-                        }
-                    }
-                    return objeto;
-                }
-            };
             substituirValoresNulos(sheet3det[0], " ");
 
             const root = parse(htmlFile);
             const characterName = root.querySelector('#characterName');
-            characterName.set_content(`${sheet3det[0].charactername}`);
             const points = root.querySelector('#points');
-            points.set_content(`${sheet3det[0].points}`);
             const characterClass = root.querySelector('#characterClass');
-            characterClass.set_content(`${sheet3det[0].characterclass}`);
             const characterRace = root.querySelector('#characterRace');
-            characterRace.set_content(`${sheet3det[0].characterrace}`);
             const strenghPoints = root.querySelector('#strenghPoints');
-            strenghPoints.set_content(`${sheet3det[0].strenghpoints}`);
             const habilityPoints = root.querySelector('#habilityPoints');
-            habilityPoints.set_content(`${sheet3det[0].habilitypoints}`);
             const vantages = root.querySelector('#vantages');
-            vantages.set_content(`${sheet3det[0].vantages}`);
             const resistancePoints = root.querySelector('#resistancePoints');
-            resistancePoints.set_content(`${sheet3det[0].resistancepoints}`);
             const armorPoints = root.querySelector('#armorPoints');
-            armorPoints.set_content(`${sheet3det[0].armorpoints}`);
             const disavantages = root.querySelector('#disavantages');
-            disavantages.set_content(`${sheet3det[0].disavantages}`);
             const firePowerPoints = root.querySelector('#firePowerPoints');
-            firePowerPoints.set_content(`${sheet3det[0].firepowerpoints}`);
             const healthPoints = root.querySelector('#healthPoints');
-            healthPoints.set_content(`${sheet3det[0].healthpoints}`);
             const manaPoints = root.querySelector('#manaPoints');
-            manaPoints.set_content(`${sheet3det[0].manapoints}`);
             const experiencePoints = root.querySelector('#experiencePoints');
-            experiencePoints.set_content(`${sheet3det[0].experiencepoints}`);
             const damageType = root.querySelector('#damageType');
-            damageType.set_content(`${sheet3det[0].damagetype}`);
             const spellsKnown = root.querySelector('#spellsKnown');
-            spellsKnown.set_content(`${sheet3det[0].spellsknown}`);
             const inventory = root.querySelector('#inventory');
-            inventory.set_content(`${sheet3det[0].inventory}`);
             const history = root.querySelector('#history');
+
+
+            characterName.set_content(`${sheet3det[0].charactername}`);
+            points.set_content(`${sheet3det[0].points}`);
+            characterClass.set_content(`${sheet3det[0].characterclass}`);
+            characterRace.set_content(`${sheet3det[0].characterrace}`);
+            strenghPoints.set_content(`${sheet3det[0].strenghpoints}`);
+            habilityPoints.set_content(`${sheet3det[0].habilitypoints}`);
+            vantages.set_content(`${sheet3det[0].vantages}`);
+            resistancePoints.set_content(`${sheet3det[0].resistancepoints}`);
+            armorPoints.set_content(`${sheet3det[0].armorpoints}`);
+            disavantages.set_content(`${sheet3det[0].disavantages}`);
+            firePowerPoints.set_content(`${sheet3det[0].firepowerpoints}`);
+            healthPoints.set_content(`${sheet3det[0].healthpoints}`);
+            manaPoints.set_content(`${sheet3det[0].manapoints}`);
+            experiencePoints.set_content(`${sheet3det[0].experiencepoints}`);
+            damageType.set_content(`${sheet3det[0].damagetype}`);
+            spellsKnown.set_content(`${sheet3det[0].spellsknown}`);
+            inventory.set_content(`${sheet3det[0].inventory}`);
             history.set_content(`${sheet3det[0].history}`);
 
             const url = root.querySelector('a[href="/my-sheet/:sheetNumber/update"]');
@@ -202,26 +205,74 @@ const getMySheet = async (req, res) => {
 
 const getUpdateSheet = async (req, res) => {
     const { sheetNumber } = req.params;
+    const { id } = req.user;
     try {
-        const htmlFile = await fs.readFile('./src/public/my-sheet-3det-update.html', 'utf-8', (err, data) => {
-            if (err) {
-                return console.log(err.message);
-            } else {
-                return data
-            }
-        });
-        const root = parse(htmlFile);
-        const url = root.querySelector('form[action="/my-sheet/:sheetNumber/update"]');
-        url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
-        const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber"]');
-        url2.setAttribute('href', `/my-sheet/${sheetNumber}`);
-        const rootString = root.toString();
-        return res.status(200).send(rootString);
+        const sheetsFound = await knex('user_sheets').where('user_id', id);
+        if (sheetsFound[sheetNumber - 1].system === '3D&T') {
+            const sheet3det = await knex('threedetsheets').where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            const htmlFile = await fs.readFile('./src/public/my-sheet-3det-update.html', 'utf-8', (err, data) => {
+                if (err) {
+                    return console.log(err.message);
+                } else {
+                    return data
+                }
+            });
+
+            substituirValoresNulos(sheet3det[0], " ");
+
+            const root = parse(htmlFile);
+            const url = root.querySelector('form[action="/my-sheet/:sheetNumber/update"]');
+            const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber"]');
+            const characterName = root.querySelector('input[name="characterName"]');
+            const points = root.querySelector('input[name="points"]');
+            const characterClass = root.querySelector('input[name="characterClass"]');
+            const characterRace = root.querySelector('input[name="characterRace"]');
+            const strenghPoints = root.querySelector('input[name="strenghPoints"]');
+            const habilityPoints = root.querySelector('input[name="habilityPoints"]');
+            const resistancePoints = root.querySelector('input[name="resistancePoints"]');
+            const armorPoints = root.querySelector('input[name="armorPoints"]');
+            const firePowerPoints = root.querySelector('input[name="firePowerPoints"]');
+            const vantages = root.querySelector('textarea[name="vantages"]');
+            const disavantages = root.querySelector('textarea[name="disavantages"]');
+            const healthPoints = root.querySelector('input[name="healthPoints"]');
+            const manaPoints = root.querySelector('input[name="manaPoints"]');
+            const experiencePoints = root.querySelector('input[name="experiencePoints"]');
+            const damageType = root.querySelector('textarea[name="damageType"]');
+            const spellsKnown = root.querySelector('textarea[name="spellsKnown"]');
+            const inventory = root.querySelector('textarea[name="inventory"]');
+            const history = root.querySelector('textarea[name="history"]');
+
+            url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
+            url2.setAttribute('href', `/my-sheet/${sheetNumber}`);
+
+            characterName.setAttribute('placeholder', `${sheet3det[0].charactername}`);
+            points.setAttribute('placeholder', `${sheet3det[0].points}`);
+            characterClass.setAttribute('placeholder', `${sheet3det[0].characterclass}`);
+            characterRace.setAttribute('placeholder', `${sheet3det[0].characterrace}`);
+            strenghPoints.setAttribute('placeholder', `${sheet3det[0].strenghpoints}`);
+            habilityPoints.setAttribute('placeholder', `${sheet3det[0].habilitypoints}`);
+            resistancePoints.setAttribute('placeholder', `${sheet3det[0].resistancepoints}`);
+            armorPoints.setAttribute('placeholder', `${sheet3det[0].armorpoints}`);
+            firePowerPoints.setAttribute('placeholder', `${sheet3det[0].firepowerpoints}`);
+            vantages.setAttribute('placeholder', `${sheet3det[0].vantages}`);
+            disavantages.setAttribute('placeholder', `${sheet3det[0].disavantages}`);
+            healthPoints.setAttribute('placeholder', `${sheet3det[0].healthpoints}`);
+            manaPoints.setAttribute('placeholder', `${sheet3det[0].manapoints}`);
+            experiencePoints.setAttribute('placeholder', `${sheet3det[0].experiencepoints}`);
+            damageType.setAttribute('placeholder', `${sheet3det[0].damagetype}`);
+            spellsKnown.setAttribute('placeholder', `${sheet3det[0].spellsknown}`);
+            inventory.setAttribute('placeholder', `${sheet3det[0].inventory}`);
+            history.setAttribute('placeholder', `${sheet3det[0].history}`);
+
+            const rootString = root.toString();
+            return res.status(200).send(rootString);
+        }
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
+
 const updateSheet = async (req, res) => {
     const { sheetNumber } = req.params;
     const { id } = req.user;
