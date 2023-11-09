@@ -26,6 +26,6 @@ rota.get('/my-sheet/:sheetNumber', getMySheet);
 rota.get('/my-sheet/:sheetNumber/update', getUpdateSheet);
 rota.post('/my-sheet/:sheetNumber/update', updateSheet);
 rota.get('/my-sheet/:sheetNumber/delete', deleteSheet);
-rota.get('/logout', getLogout);
+rota.get('/user/logout', getLogout);
 
 module.exports = rota

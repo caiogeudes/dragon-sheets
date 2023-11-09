@@ -39,5 +39,7 @@ Tipos de Dano, Magias Conhecidas, Inventário e História.
 
 ### Deletar ficha - `GET /my-sheet/:sheetNumber/delete`
 
+### Fazer logout - `GET /user/logout`
+
 ## (Projeto ainda em desenvolvimento...)
 
