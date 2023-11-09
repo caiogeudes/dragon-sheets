@@ -254,15 +254,15 @@ const getUpdateSheet = async (req, res) => {
             resistancePoints.setAttribute('placeholder', `${sheet3det[0].resistancepoints}`);
             armorPoints.setAttribute('placeholder', `${sheet3det[0].armorpoints}`);
             firePowerPoints.setAttribute('placeholder', `${sheet3det[0].firepowerpoints}`);
-            vantages.setAttribute('placeholder', `${sheet3det[0].vantages}`);
-            disavantages.setAttribute('placeholder', `${sheet3det[0].disavantages}`);
+            vantages.set_content(`${sheet3det[0].vantages}`);
+            disavantages.set_content(`${sheet3det[0].disavantages}`);
             healthPoints.setAttribute('placeholder', `${sheet3det[0].healthpoints}`);
             manaPoints.setAttribute('placeholder', `${sheet3det[0].manapoints}`);
             experiencePoints.setAttribute('placeholder', `${sheet3det[0].experiencepoints}`);
-            damageType.setAttribute('placeholder', `${sheet3det[0].damagetype}`);
-            spellsKnown.setAttribute('placeholder', `${sheet3det[0].spellsknown}`);
-            inventory.setAttribute('placeholder', `${sheet3det[0].inventory}`);
-            history.setAttribute('placeholder', `${sheet3det[0].history}`);
+            damageType.set_content(`${sheet3det[0].damagetype}`);
+            spellsKnown.set_content(`${sheet3det[0].spellsknown}`);
+            inventory.set_content(`${sheet3det[0].inventory}`);
+            history.set_content(`${sheet3det[0].history}`);
 
             const rootString = root.toString();
             return res.status(200).send(rootString);
@@ -296,7 +296,6 @@ const updateSheet = async (req, res) => {
         inventory,
         history
     } = req.body;
-
 
     try {
         const sheetsFound = await knex('user_sheets').where('user_id', id);

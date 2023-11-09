@@ -7,6 +7,7 @@ const { getSignUpPage, getUserPage, createUser } = require('./controllers/user')
 const { getLoginPage, login } = require('./controllers/login');
 const { getMainPage } = require('./controllers/main');
 const { getNewSheetPage, createNewSheet3DET, get3detPage, getMySheet, updateSheet, getUpdateSheet, deleteSheet } = require('./controllers/sheet');
+const { getLogout } = require('./controllers/logout');
 const rota = express();
 
 rota.get('/sign-up', getSignUpPage)
@@ -25,5 +26,6 @@ rota.get('/my-sheet/:sheetNumber', getMySheet);
 rota.get('/my-sheet/:sheetNumber/update', getUpdateSheet);
 rota.post('/my-sheet/:sheetNumber/update', updateSheet);
 rota.get('/my-sheet/:sheetNumber/delete', deleteSheet);
+rota.get('/logout', getLogout);
 
 module.exports = rota
