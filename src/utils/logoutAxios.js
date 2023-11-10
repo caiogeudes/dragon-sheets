@@ -1,17 +1,17 @@
 const axios = require('axios').default;
 const baseUrl = process.env.BASE_URL;
 
-const authorizationAxios = async (token) => {
+const logoutAxios = async () => {
     try {
-        await axios.get(`${baseUrl}/user`, {
+        await axios.get(`${baseUrl}/logout`, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': 'Sem token'
             }
-        });
+        })
     } catch (error) {
         console.error('Axios error:', error.message);
         throw error;
     }
-};
+}
 
-module.exports = authorizationAxios
+module.exports = logoutAxios
