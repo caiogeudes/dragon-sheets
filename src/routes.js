@@ -6,7 +6,16 @@ const validateNewSheet = require('./middlewares/validateNewSheet');
 const { getSignUpPage, getUserPage, createUser } = require('./controllers/user');
 const { getLoginPage, login } = require('./controllers/login');
 const { getMainPage } = require('./controllers/main');
-const { getNewSheetPage, createNewSheet3DET, get3detPage, getMySheet, updateSheet, getUpdateSheet, deleteSheet } = require('./controllers/sheet');
+const { getNewSheetPage,
+    createNewSheet3DET,
+    get3detPage,
+    getMySheet,
+    updateSheet,
+    getUpdateSheet,
+    deleteSheet,
+    getTerraDevastadaSheet,
+    createNewSheetTerraDevastada
+} = require('./controllers/sheet');
 const { getLogout } = require('./controllers/logout');
 const rota = express();
 
@@ -27,5 +36,7 @@ rota.get('/my-sheet/:sheetNumber/update', getUpdateSheet);
 rota.post('/my-sheet/:sheetNumber/update', updateSheet);
 rota.get('/my-sheet/:sheetNumber/delete', deleteSheet);
 rota.get('/user/logout', getLogout);
+rota.get('/new-sheet-terra-devastada', getTerraDevastadaSheet);
+rota.post('/new-sheet-terra-devastada', createNewSheetTerraDevastada);
 
 module.exports = rota

@@ -33,3 +33,17 @@ CREATE TABLE user_sheets (
   sheet_id integer,
   system text
 );
+
+CREATE TABLE terra_devastada (
+	id serial primary key,
+  user_id integer references users(id) not null, 
+  characterName text not null, 
+  horrorPoints integer,
+  characterAppearance text, 
+  characterConcept text,
+  characteristics text, 
+  conditions text, 
+  convictionPoints integer,
+  trumps text,
+  inventory text
+);

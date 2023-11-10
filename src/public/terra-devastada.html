@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Dragon Sheets 🐲</title>
+</head>
+
+<body>
+    <header></header>
+    <br>
+    <section class="conteudo-topo">
+        <br>
+        <br>
+        <h1 name="system">Terra Devastada</h1>
+        <div>
+            <form action="/new-sheet-terra-devastada" method="post">
+                <table class="sheet">
+                    <tr>
+                        <th>
+                            <h2>Nome: </h2>
+                        </th>
+                        <th>
+                            <h2>
+                                <input type="text" name="characterName">
+                            </h2>
+                        </th>
+                        <th class="th2">
+                            <h2>Horror:</h2>
+                        </th>
+                        <th class="th2">
+                            <input type="number" name="horrorPoints" class="numberInput">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <h2>Aparência: </h2>
+                        </th>
+                        <th>
+                            <h2>
+                                <input type="text" name="characterAppearance">
+                            </h2>
+                        </th>
+                        <th class="th2">
+                            <h2>Conceito: </h2>
+                        </th>
+                        <th class="th2">
+                            <h2>
+                                <textarea type="textarea" name="characterConcept" class="textAreaInput"></textarea>
+                            </h2>
+                        </th>
+                    </tr>
+                </table>
+                <table class="sheet">
+                    <tr>
+                        <th>
+                            <h2>Característica:</h2>
+                        </th>
+                        <th>
+                            <h2>Condições:</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <textarea type="textarea" name="characteristics" class="textAreaInput"></textarea>
+                        </th>
+                        <th>
+                            <textarea type="textarea" name="conditions" class="textAreaInput"></textarea>
+                        </th>
+                        <th>
+                            <h2>Convicção:</h2>
+                        </th>
+                        <th>
+                            <input type="number" name="convictionPoints" class="numberInput">
+                        </th>
+                    </tr>
+                </table>
+                <table class="sheet">
+                    <tr>
+                        <th>
+                            <h2>Trunfos:</h2>
+                        </th>
+                        <th>
+                            <h2>Inventário:</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <textarea type="textarea" name="trumps" class="textAreaInput"></textarea>
+                        </th>
+                        <th>
+                            <textarea type="textarea" name="inventory" class="textAreaInput"></textarea>
+
+                        </th>
+                    </tr>
+                </table>
+                <button type="submit" id="btn-enviar">Enviar</button>
+            </form>
+        </div>
+        <br>
+        <br>
+        <div></div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="/main">Voltar</a>
+        <br>
+        <br>
+    </section>
+    <br>
+    <br>
+</body>
+
+</html>

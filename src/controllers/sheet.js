@@ -4,6 +4,7 @@ const knex = require('../database');
 
 function substituirValoresNulos(objeto, valorSubstituto) {
     for (let propriedade in objeto) {
+
         if (objeto.hasOwnProperty(propriedade)) {
             if (objeto[propriedade] === undefined) {
                 objeto[propriedade] = valorSubstituto;
@@ -196,10 +197,51 @@ const getMySheet = async (req, res) => {
             url2.setAttribute('href', `/my-sheet/${sheetNumber}/delete`);
             const rootString = root.toString();
             return res.status(200).send(rootString);
+        } else if (sheetsFound[sheetNumber - 1].system === 'Terra Devastada') {
+            const sheetTerraDevastada = await knex('terra_devastada').where('id', sheetsFound[sheetNumber - 1].sheet_id);
+
+            const htmlFile = await fs.readFile('./src/public/my-sheet-terra-devastada.html', 'utf-8', (err, data) => {
+                if (err) {
+                    return console.log(err.message);
+                } else {
+                    return data
+                }
+            });
+
+            substituirValoresNulos(sheetTerraDevastada[0], "not null");
+
+            const root = parse(htmlFile);
+            const characterName = root.querySelector('#characterName');
+            const horrorPoints = root.querySelector('#horrorPoints');
+            const characterAppearance = root.querySelector('#characterAppearance');
+            const characterConcept = root.querySelector('#characterConcept');
+            const characteristics = root.querySelector('#characteristics');
+            const conditions = root.querySelector('#conditions');
+            const convictionPoints = root.querySelector('#convictionPoints');
+            const trumps = root.querySelector('#trumps');
+            const inventory = root.querySelector('#inventory');
+
+            characterName.set_content(`${sheetTerraDevastada[0].charactername}`);
+            horrorPoints.set_content(`${sheetTerraDevastada[0].horrorpoints}`);
+            characterAppearance.set_content(`${sheetTerraDevastada[0].characterappearance}`);
+            characterConcept.set_content(`${sheetTerraDevastada[0].characterconcept}`);
+            characteristics.set_content(`${sheetTerraDevastada[0].characteristics}`);
+            conditions.set_content(`${sheetTerraDevastada[0].conditions}`);
+            convictionPoints.set_content(`${sheetTerraDevastada[0].convictionpoints}`);
+            trumps.set_content(`${sheetTerraDevastada[0].trumps}`);
+            inventory.set_content(`${sheetTerraDevastada[0].inventory}`);
+
+            const url = root.querySelector('a[href="/my-sheet/:sheetNumber/update"]');
+            url.setAttribute('href', `/my-sheet/${sheetNumber}/update`);
+            const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber/delete"]');
+            url2.setAttribute('href', `/my-sheet/${sheetNumber}/delete`);
+            const rootString = root.toString();
+            return res.status(200).send(rootString);
         }
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+
     }
 }
 
@@ -244,7 +286,6 @@ const getUpdateSheet = async (req, res) => {
 
             url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
             url2.setAttribute('href', `/my-sheet/${sheetNumber}`);
-
             characterName.setAttribute('placeholder', `${sheet3det[0].charactername}`);
             points.setAttribute('placeholder', `${sheet3det[0].points}`);
             characterClass.setAttribute('placeholder', `${sheet3det[0].characterclass}`);
@@ -266,6 +307,45 @@ const getUpdateSheet = async (req, res) => {
 
             const rootString = root.toString();
             return res.status(200).send(rootString);
+        } else if (sheetsFound[sheetNumber - 1].system === 'Terra Devastada') {
+            const sheetTerraDevastada = await knex('terra_devastada').where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            const htmlFile = await fs.readFile('./src/public/my-sheet-terra-devastada-update.html', 'utf-8', (err, data) => {
+                if (err) {
+                    return console.log(err.message);
+                } else {
+                    return data
+                }
+            });
+
+            substituirValoresNulos(sheetTerraDevastada[0], " ");
+
+            const root = parse(htmlFile);
+            const url = root.querySelector('form[action="/my-sheet/:sheetNumber/update"]');
+            const url2 = root.querySelector('a[href="/my-sheet/:sheetNumber"]');
+            const characterName = root.querySelector('input[name="characterName"]');
+            const horrorPoints = root.querySelector('input[name="horrorPoints"]');
+            const characterAppearance = root.querySelector('input[name="characterAppearance"]');
+            const characterConcept = root.querySelector('textarea[name="characterConcept"]');
+            const characteristics = root.querySelector('textarea[name="characteristics"]');
+            const conditions = root.querySelector('textarea[name="conditions"]');
+            const convictionPoints = root.querySelector('input[name="convictionPoints"]');
+            const trumps = root.querySelector('textarea[name="trumps"]');
+            const inventory = root.querySelector('textarea[name="inventory"]');
+
+            url.setAttribute('action', `/my-sheet/${sheetNumber}/update`);
+            url2.setAttribute('href', `/my-sheet/${sheetNumber}`);
+            characterName.setAttribute('placeholder', `${sheetTerraDevastada[0].charactername}`);
+            horrorPoints.setAttribute('placeholder', `${sheetTerraDevastada[0].horrorpoints}`);
+            characterAppearance.setAttribute('placeholder', `${sheetTerraDevastada[0].characterappearance}`);
+            characterConcept.set_content(`${sheetTerraDevastada[0].characterconcept}`);
+            characteristics.set_content(`${sheetTerraDevastada[0].characteristics}`);
+            conditions.set_content(`${sheetTerraDevastada[0].conditions}`);
+            convictionPoints.setAttribute('placeholder', `${sheetTerraDevastada[0].convictionPoints}`);
+            trumps.set_content(`${sheetTerraDevastada[0].trumps}`);
+            inventory.set_content(`${sheetTerraDevastada[0].inventory}`);
+
+            const rootString = root.toString();
+            return res.status(200).send(rootString);
         }
     } catch (error) {
         console.log(error.message);
@@ -276,37 +356,31 @@ const getUpdateSheet = async (req, res) => {
 const updateSheet = async (req, res) => {
     const { sheetNumber } = req.params;
     const { id } = req.user;
-    let {
-        characterName,
-        points,
-        characterClass,
-        characterRace,
-        strenghPoints,
-        habilityPoints,
-        resistancePoints,
-        armorPoints,
-        firePowerPoints,
-        vantages,
-        disavantages,
-        healthPoints,
-        manaPoints,
-        experiencePoints,
-        damageType,
-        spellsKnown,
-        inventory,
-        history
-    } = req.body;
 
     try {
         const sheetsFound = await knex('user_sheets').where('user_id', id);
         if (sheetsFound[sheetNumber - 1].system === '3D&T') {
-            const htmlFile = await fs.readFile('./src/public/my-sheet-3det-update.html', 'utf-8', (err, data) => {
-                if (err) {
-                    return console.log(err.message);
-                } else {
-                    return data
-                }
-            });
+            let {
+                characterName,
+                points,
+                characterClass,
+                characterRace,
+                strenghPoints,
+                habilityPoints,
+                resistancePoints,
+                armorPoints,
+                firePowerPoints,
+                vantages,
+                disavantages,
+                healthPoints,
+                manaPoints,
+                experiencePoints,
+                damageType,
+                spellsKnown,
+                inventory,
+                history
+            } = req.body;
+
             if (characterName) {
                 await knex('threedetsheets').update({ charactername: characterName }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
             }
@@ -361,7 +435,47 @@ const updateSheet = async (req, res) => {
             if (history) {
                 await knex('threedetsheets').update({ history }).where('id', sheetsFound[sheetNumber - 1].sheet_id)
             }
-            const root = parse(htmlFile);
+            return res.status(200).redirect(`/my-sheet/${sheetNumber}`);
+        } else if (sheetsFound[sheetNumber - 1].system === 'Terra Devastada') {
+            let {
+                characterName,
+                horrorPoints,
+                characterAppearance,
+                characterConcept,
+                characteristics,
+                conditions,
+                convictionPoints,
+                trumps,
+                inventory
+            } = req.body;
+
+            if (characterName) {
+                await knex('terra_devastada').update({ charactername: characterName }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (horrorPoints) {
+                await knex('terra_devastada').update({ horrorpoints: horrorPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (characterAppearance) {
+                await knex('terra_devastada').update({ characterappearance: characterAppearance }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (characterConcept) {
+                await knex('terra_devastada').update({ characterconcept: characterConcept }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (characteristics) {
+                await knex('terra_devastada').update({ characteristics }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (conditions) {
+                await knex('terra_devastada').update({ conditions }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (convictionPoints) {
+                await knex('terra_devastada').update({ convictionpoints: convictionPoints }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (trumps) {
+                await knex('terra_devastada').update({ trumps }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
+            if (inventory) {
+                await knex('terra_devastada').update({ inventory }).where('id', sheetsFound[sheetNumber - 1].sheet_id);
+            }
             return res.status(200).redirect(`/my-sheet/${sheetNumber}`);
         }
     } catch (error) {
@@ -378,7 +492,10 @@ const deleteSheet = async (req, res) => {
         if (sheetsFound[sheetNumber - 1].system === '3D&T') {
             await knex('threedetsheets').where('id', sheetsFound[sheetNumber - 1].sheet_id).delete();
             await knex('user_sheets').where('sheet_id', sheetsFound[sheetNumber - 1].sheet_id).delete();
-        }
+        } else if (sheetsFound[sheetNumber - 1].system === 'Terra Devastada') {
+            await knex('terra_devastada').where('id', sheetsFound[sheetNumber - 1].sheet_id).delete();
+            await knex('user_sheets').where('sheet_id', sheetsFound[sheetNumber - 1].sheet_id).delete();
+        };
         return res.status(200).redirect('/main')
     } catch (error) {
         console.log(error.message);
@@ -386,6 +503,74 @@ const deleteSheet = async (req, res) => {
     }
 }
 
+const getTerraDevastadaSheet = async (req, res) => {
+    try {
+        const htmlFile = await fs.readFile('./src/public/terra-devastada.html', 'utf-8', (err, data) => {
+            if (err) {
+                return console.log(err.message);
+            } else {
+                return data
+            }
+        });
+        const root = parse(htmlFile);
+        const rootString = root.toString();
+        return res.status(200).send(rootString);
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+}
+
+const createNewSheetTerraDevastada = async (req, res) => {
+    const { id } = req.user;
+    let {
+        characterName,
+        horrorPoints,
+        characterAppearance,
+        characterConcept,
+        characteristics,
+        conditions,
+        convictionPoints,
+        trumps,
+        inventory
+    } = req.body;
+
+    if (horrorPoints === "") {
+        horrorPoints = 0;
+    } if (convictionPoints === "") {
+        convictionPoints = 0;
+    }
+    try {
+        const newSheet = await knex('terra_devastada').insert({
+            user_id: id,
+            charactername: characterName,
+            horrorpoints: horrorPoints,
+            characterappearance: characterAppearance,
+            characterconcept: characterConcept,
+            characteristics,
+            conditions,
+            convictionpoints: convictionPoints,
+            trumps,
+            inventory
+        }).returning('*');
+
+        await knex('user_sheets').insert({
+            user_id: id,
+            sheet_id: newSheet[0].id,
+            system: 'Terra Devastada'
+        });
+        const sheet = await knex('user_sheets').where('user_id', id);
+        let index = 0;
+        for (let i = 0; i < sheet.length; i++) {
+            if (sheet[i].sheet_id === newSheet[0].id) {
+                index = i + 1;
+            }
+        }
+        return res.status(201).redirect(`/my-sheet/${index}`);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+}
 module.exports = {
     getNewSheetPage,
     get3detPage,
@@ -393,5 +578,7 @@ module.exports = {
     getMySheet,
     updateSheet,
     getUpdateSheet,
-    deleteSheet
+    deleteSheet,
+    getTerraDevastadaSheet,
+    createNewSheetTerraDevastada
 }
