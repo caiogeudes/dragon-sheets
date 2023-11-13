@@ -47,3 +47,4 @@ CREATE TABLE terra_devastada (
   trumps text,
   inventory text
 );
+

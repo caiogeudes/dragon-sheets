@@ -53,5 +53,16 @@ Tipos de Dano, Magias Conhecidas, Inventário e História.
 #### Podemos criar uma ficha com base no sistema Terra Devastada, que possui os seguintes campos:
 * Nome do Personagem, Pontos de Horror, Aparência, Conceito, Características, Condições, Convicção, Trunfos e Inventário.
 
-## (Projeto ainda em desenvolvimento...)
+## Informações adicionais
+### Bibliotecas npm usadas: 
+* express
+* axios
+* bcrypt
+* dotenv 
+* joi
+* jsonwebtoken
+* knex
+* node-html-parser
+* pg
 
+## (Projeto ainda em desenvolvimento...)
